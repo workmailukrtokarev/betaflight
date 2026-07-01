@@ -5,18 +5,20 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
-    container:
-      image: betaflight/cloudbuild:v4.7
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
 
+      - name: Install GNU Arm Embedded Toolchain
+        uses: jetli/arm-none-eabi-gcc-action@v1
+        with:
+          release: '10.3-2021.10'
+
       - name: Build Firmware
         run: |
-          git config --global --add safe.directory '*'
           make TARGET=KAPONGA_KIWIF4_12S
-          
+
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
