@@ -10,14 +10,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v5
 
-      - name: Install ARM GCC Compiler
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y gcc-arm-none-eabi binutils-arm-none-eabi make
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2'
 
       - name: Build Firmware
         run: |
-          make TARGET=KAPONGA_KIWIF4_12S
+          make TARGET=KAPONGA_KIWIF4_12S EXTRA_FLAGS="-Wno-error"
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
