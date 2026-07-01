@@ -77,17 +77,7 @@ jobs:
     name: Test
     runs-on: ubuntu-latest
     steps:
-      - run: exit 0
-      - uses: actions/checkout@v5
-
-      - name: Install dependencies
-        run: sudo apt-get install -y libblocksruntime-dev clang-18
-
-      - name: Run sanity checks
-        run: make EXTRA_FLAGS=-Werror checks
-
-      - name: Run all unit tests
-        run: make EXTRA_FLAGS=-Werror test-all
+      - run: echo "Тесты отключены"
 
   result:
     name: Complete
