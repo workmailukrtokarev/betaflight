@@ -10,6 +10,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v5
 
+      - name: Install Build Tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential gcc-multilib
+
       - name: Install GNU Arm Embedded Toolchain
         uses: jetli/arm-none-eabi-gcc-action@v1
         with:
