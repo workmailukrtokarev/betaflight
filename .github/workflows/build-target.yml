@@ -1,0 +1,22 @@
+name: Manual Build Target
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Build Firmware
+        uses: betaflight/cloudbuild@v4.5
+        with:
+          target: KAPONGA_KIWIF4_12S
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: betaflight-hex-file
+          path: obj/*.hex
