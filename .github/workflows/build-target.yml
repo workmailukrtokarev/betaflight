@@ -6,19 +6,17 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    container:
+      image: betaflight/cloudbuild:v4.7
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
 
-      - name: Setup Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: '3.2'
-
       - name: Build Firmware
         run: |
-          make TARGET=KAPONGA_KIWIF4_12S EXTRA_FLAGS="-Wno-error"
-
+          git config --global --add safe.directory '*'
+          make TARGET=KAPONGA_KIWIF4_12S
+          
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
