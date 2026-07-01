@@ -6,15 +6,17 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    container:
-      image: betaflight/cloudbuild:v4.5
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
 
+      - name: Install ARM GCC Compiler
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gcc-arm-none-eabi binutils-arm-none-eabi make
+
       - name: Build Firmware
         run: |
-          git config --global --add safe.directory '*'
           make TARGET=KAPONGA_KIWIF4_12S
 
       - name: Upload Artifact
