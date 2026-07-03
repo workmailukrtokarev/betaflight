@@ -71,13 +71,14 @@ jobs:
       sdk: ${{ matrix.sdk }}
       targets: ${{ matrix.targets }}
       tools-cache-key: ${{ needs.setup.outputs.tools-cache-key }}
-      release_build: ${{ inputs.release_build }}
+      release_build: false
 
   test:
     name: Test
+    if: false
     runs-on: ubuntu-latest
     steps:
-      - run: echo "Тесты отключены"
+      - run: echo "Пропущено"
 
   result:
     name: Complete
