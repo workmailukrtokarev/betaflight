@@ -1,4 +1,4 @@
-name: Manual Build Target
+name: Build KAPONGA_KIWIF4_12S
 
 on:
   workflow_dispatch:
@@ -6,27 +6,31 @@ on:
 jobs:
   build:
     runs-on: ubuntu-24.04
+
     steps:
-      - name: Checkout code with submodules
+      - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          submodules: recursive
+          fetch-depth: 0
 
-      - name: Install Build Essentials
+      - name: Install base build dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y build-essential curl bzip2 gcc-multilib
+          sudo apt-get install -y build-essential curl git
 
-      - name: Install Betaflight ARM SDK
-        run: |
-          make arm_sdk_install
+      - name: Install ARM GCC toolchain (official make target)
+        run: make arm_sdk_install
 
-      - name: Build Custom Firmware
-        run: |
-          make TARGET=KAPONGA_KIWIF4_12S -j$(nproc)
+      - name: Hydrate config submodule (src/config)
+        run: make configs
 
-      - name: Upload Artifact
+      - name: Build firmware
+        run: make CONFIG=KAPONGA_KIWIF4_12S -j"$(nproc)"
+
+      - name: Upload .hex as build artifact
         uses: actions/upload-artifact@v4
         with:
-          name: betaflight-kaponag-hex
-          path: obj/*.hex
+          name: betaflight-kaponga-hex
+          path: |
+            obj/*.hex
+            obj/*.bin
