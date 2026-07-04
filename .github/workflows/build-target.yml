@@ -5,18 +5,28 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
-    container: betaflight/betaflight-build:latest
+    runs-on: ubuntu-24.04
     steps:
-      - name: Checkout code
+      - name: Checkout code with submodules
         uses: actions/checkout@v4
+        with:
+          submodules: recursive
 
-      - name: Build Firmware
+      - name: Install Build Essentials
         run: |
-          make KIWIF4
+          sudo apt-get update
+          sudo apt-get install -y build-essential curl bzip2 gcc-multilib
+
+      - name: Install Betaflight ARM SDK
+        run: |
+          make arm_sdk_install
+
+      - name: Build Custom Firmware
+        run: |
+          make TARGET=KAPONGA_KIWIF4_12S -j$(nproc)
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: betaflight-kiwif4-hex
+          name: betaflight-kaponag-hex
           path: obj/*.hex
