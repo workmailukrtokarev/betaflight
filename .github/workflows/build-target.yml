@@ -5,19 +5,15 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
+    container: betaflight/betaflight-build:latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install Compiler and Dependencies
+      - name: Build Firmware
         run: |
-          sudo apt-get update
-          sudo apt-get install -y build-essential gcc-arm-none-eabi gcc-multilib ccache
-
-      - name: Build Target
-        run: |
-          make EXTRA_FLAGS="" KIWIF4
+          make KIWIF4
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
